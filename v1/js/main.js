@@ -14,25 +14,36 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function initTheme() {
   const toggleBtn = document.getElementById('theme-toggle');
-  const storedTheme = localStorage.getItem('pz_theme');
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  
-  // Set initial theme
-  const initialTheme = storedTheme ? storedTheme : (prefersDark ? 'dark' : 'light');
-  setTheme(initialTheme);
+  // Clear any legacy auto-saved theme key
+  try {
+    localStorage.removeItem('pz_theme');
+  } catch (e) {}
+
+  // Explicit user preference; default to 'light'
+  let storedTheme = null;
+  try {
+    storedTheme = localStorage.getItem('pz_user_theme');
+  } catch (e) {}
+
+  const initialTheme = storedTheme === 'dark' ? 'dark' : 'light';
+  setTheme(initialTheme, false);
 
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      setTheme(newTheme);
+      setTheme(newTheme, true);
     });
   }
 }
 
-function setTheme(theme) {
+function setTheme(theme, save = false) {
   document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('pz_theme', theme);
+  if (save) {
+    try {
+      localStorage.setItem('pz_user_theme', theme);
+    } catch (e) {}
+  }
 
   const toggleBtn = document.getElementById('theme-toggle');
   if (toggleBtn) {

@@ -73,6 +73,11 @@ body {
     gap: 3rem;
     padding: 2.25rem 1.25rem;
   }
+
+  .scholar-sidebar {
+    position: static;
+    top: auto;
+  }
 }
 
 /* Sticky Left Sidebar */
