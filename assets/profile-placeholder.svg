@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <rect width="300" height="300" fill="#171224" rx="16"/>
+  <rect x="2" y="2" width="296" height="296" fill="none" stroke="#2B2240" stroke-width="2" rx="14"/>
+  
+  <!-- Subtle architectural grid lines -->
+  <line x1="0" y1="150" x2="300" y2="150" stroke="#221B35" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="150" y1="0" x2="150" y2="300" stroke="#221B35" stroke-width="1" stroke-dasharray="4 4"/>
+  
+  <!-- Minimalist Portrait Silhouette -->
+  <g fill="#3A3055" opacity="0.8">
+    <circle cx="150" cy="118" r="46"/>
+    <path d="M78 240 C78 185, 110 175, 150 175 C190 175, 222 185, 222 240 Z"/>
+  </g>
+  
+  <!-- Monogram Initials Badge -->
+  <circle cx="150" cy="118" r="28" fill="#241B38"/>
+  <text x="150" y="125" font-family="'Newsreader', Georgia, serif" font-size="22" font-weight="700" fill="#E2DEEC" text-anchor="middle">PZ</text>
+  
+  <!-- Drop photo label hint -->
+  <rect x="50" y="254" width="200" height="26" rx="4" fill="#241B38" stroke="#382C54" stroke-width="1"/>
+  <text x="150" y="271" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#9F95B5" text-anchor="middle" letter-spacing="0.04em">Drop profile.jpg into assets/</text>
+</svg>

@@ -1,0 +1,385 @@
+/* ==========================================================================
+   Version 3: High-Craft Tech & Terminal Minimalist
+   Monospace Precision · Low Chrome · Dark-First Mode
+   ========================================================================== */
+
+:root {
+  --bg: #0C0A10;
+  --bg-hover: #161220;
+  --border: #231C30;
+  --border-active: #3C3050;
+
+  --text: #F3F1F7;
+  --text-muted: #9E96AF;
+  --text-faint: #675E7A;
+
+  --accent: #DE1A58;       /* Raspberry */
+  --accent-amber: #F4B342; /* Terminal Amber */
+  --accent-teal: #10B981;  /* Terminal Green */
+
+  --font-mono: "JetBrains Mono", SFMono-Regular, Menlo, monospace;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+[data-theme="light"] {
+  --bg: #FAFAFD;
+  --bg-hover: #F2EFF7;
+  --border: #E4E0EC;
+  --border-active: #CCC6D9;
+
+  --text: #130E20;
+  --text-muted: #58506A;
+  --text-faint: #8F87A1;
+
+  --accent: #DE1A58;
+  --accent-amber: #B47306;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Container */
+.terminal-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem 1.5rem;
+}
+
+/* Floating Switcher */
+.version-banner {
+  background: var(--border);
+  color: var(--text);
+  padding: 0.4rem 1rem;
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-active);
+}
+
+.version-banner a {
+  color: var(--text-muted);
+  text-decoration: underline;
+}
+
+.version-banner a:hover,
+.version-banner a.active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Terminal Header */
+.terminal-header {
+  padding: 2.5rem 0 2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin-bottom: 1.5rem;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-teal);
+  margin-right: 0.4rem;
+}
+
+.theme-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.theme-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.terminal-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.terminal-role {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.terminal-bio {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.terminal-bio strong {
+  color: var(--text);
+}
+
+.terminal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.terminal-links a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-active);
+  padding-bottom: 2px;
+  transition: all 0.15s ease;
+}
+
+.terminal-links a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Sections */
+.t-section {
+  padding: 2.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.t-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.t-section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Pillars List */
+.t-pillar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.t-pillar-row {
+  padding: 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.t-pillar-row:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-active);
+}
+
+.t-pillar-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.t-pillar-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.t-pillar-idx {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.t-pillar-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.t-pillar-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.t-pillar-link:hover {
+  text-decoration: underline;
+}
+
+/* Publications */
+.t-pub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.t-pub-row {
+  display: grid;
+  grid-template-columns: 55px 1fr;
+  gap: 1rem;
+}
+
+.t-pub-year {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-faint);
+}
+
+.t-pub-title {
+  font-size: 0.98rem;
+  font-weight: 650;
+  color: var(--text);
+  line-height: 1.45;
+  margin-bottom: 0.25rem;
+}
+
+.t-pub-authors {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.t-pub-authors strong {
+  color: var(--text);
+}
+
+.t-pub-venue {
+  font-size: 0.84rem;
+  color: var(--text-faint);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.t-pub-actions {
+  display: flex;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.t-pub-actions a,
+.t-pub-actions button {
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.bibtex-box {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+}
+
+.bibtex-box.show {
+  display: block;
+}
+
+/* Timeline */
+.t-timeline-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.t-timeline-date {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+.t-timeline-title {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.t-timeline-sub {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.t-timeline-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.t-honor {
+  color: var(--accent-amber);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Footer */
+.terminal-footer {
+  padding: 3rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  display: flex;
+  justify-content: space-between;
+}

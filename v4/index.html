@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pietro Zunino · Journal & Monograph</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Floating Switcher -->
+  <div class="version-banner">
+    <span>Compare Designs:</span>
+    <a href="/v1/">V1: Swiss Editorial</a>
+    <a href="/v2/">V2: Academic Scholar</a>
+    <a href="/v3/">V3: Tech Minimal</a>
+    <a href="/v4/" class="active">V4: Nordic Journal</a>
+  </div>
+
+  <div class="journal-container">
+
+    <!-- Masthead -->
+    <header class="masthead">
+      <div class="masthead-top">
+        <span>Technical University of Denmark · Wind & Energy Systems</span>
+        <button id="theme-toggle" class="theme-btn">Light / Dark</button>
+      </div>
+      <h1 class="masthead-title">Pietro Zunino</h1>
+      <div class="masthead-sub">Research Fellow in Power Systems & Low-Voltage EV Integration</div>
+    </header>
+
+    <main>
+
+      <!-- Thesis Narrative -->
+      <section class="thesis-section">
+        <blockquote class="thesis-quote">
+          “Studying the impact of electric vehicles on <strong>low-voltage distribution grids</strong>, developing strategies to <strong>transform EVs from a grid burden into a flexibility asset</strong>.”
+        </blockquote>
+        <p class="thesis-body">
+          I am a Ph.D. researcher investigating low-voltage grid hosting capacity, decentralized charging coordination, and ancillary grid services within the <strong>DTEC GREAT</strong> and <strong>EV4EU</strong> European consortia. My research develops <strong>model-free, decentralized charging strategies</strong> that respect realistic communication constraints, enable EVs to provide <strong>frequency ancillary services to TSOs</strong> without causing LV congestion, and models stochastic system dynamics using <strong>Monte Carlo simulations</strong>.
+        </p>
+        <div class="journal-links">
+          <a href="mailto:pizuni@dtu.dk">pizuni@dtu.dk ↗</a>
+          <a href="https://scholar.google.com/citations?user=iyDFLC0AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar ↗</a>
+          <a href="https://www.linkedin.com/in/pietro-zunino-9880a3189/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="/assets/Pietro_Zunino_CV.pdf" target="_blank" rel="noopener">Curriculum Vitae (PDF) ↗</a>
+        </div>
+      </section>
+
+      <!-- Chapter I: Research Themes -->
+      <section class="chapter" id="research">
+        <div class="chapter-header">
+          <div class="chapter-number">Chapter I</div>
+          <h2 class="chapter-title">Research Pillars</h2>
+        </div>
+
+        <div class="pillars-editorial">
+          
+          <div class="pillar-piece">
+            <div class="pillar-num">01</div>
+            <div>
+              <h3 class="pillar-heading">Model-Free & Decentralized Smart Charging</h3>
+              <p class="pillar-body">
+                Analyzing and developing model-free, decentralized charging strategies considering realistic communication between chargers and aggregators.
+              </p>
+            </div>
+          </div>
+
+          <div class="pillar-piece">
+            <div class="pillar-num">02</div>
+            <div>
+              <h3 class="pillar-heading">TSO Frequency Services without LV Issues</h3>
+              <p class="pillar-body">
+                Allowing EVs to provide frequency ancillary services to transmission system operators (TSOs) without causing thermal overloads or voltage violations at the low-voltage level where most EVs are connected.
+              </p>
+            </div>
+          </div>
+
+          <div class="pillar-piece">
+            <div class="pillar-num">03</div>
+            <div>
+              <h3 class="pillar-heading">Monte Carlo Simulations</h3>
+              <p class="pillar-body">
+                Assessing hosting capacity and charging dynamics via Monte Carlo simulations that consider the natural stochasticity of EV charging.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Chapter II: Publications -->
+      <section class="chapter" id="publications">
+        <div class="chapter-header">
+          <div class="chapter-number">Chapter II</div>
+          <h2 class="chapter-title">Selected Publications</h2>
+        </div>
+
+        <div class="pub-editorial-list">
+
+          <article class="pub-entry" id="pub-review">
+            <div class="pub-date">2026</div>
+            <div>
+              <h3 class="pub-name">Impact of electric vehicles on low-voltage distribution networks: A critical review</h3>
+              <div class="pub-byline"><strong>Pietro Zunino</strong>, Tim Unterluggauer, Mattia Marinelli, Jan Engelhardt</div>
+              <div class="pub-journal">eTransportation, Elsevier, Volume 28, Article 100594</div>
+              <div class="pub-actions">
+                <a href="https://doi.org/10.1016/j.etran.2026.100594" target="_blank" rel="noopener">doi:10.1016/j.etran.2026.100594</a>
+                <button data-toggle-bibtex="bib-1">bibtex</button>
+                <button data-copy-bibtex="bib-1">copy</button>
+              </div>
+              <div id="bib-1" class="bibtex-box">@article{zunino2026impact,
+  title={Impact of electric vehicles on low-voltage distribution networks: A critical review},
+  author={Zunino, Pietro and Unterluggauer, Tim and Marinelli, Mattia and Engelhardt, Jan},
+  journal={eTransportation},
+  volume={28},
+  pages={100594},
+  year={2026},
+  publisher={Elsevier},
+  doi={10.1016/j.etran.2026.100594}
+}</div>
+            </div>
+          </article>
+
+          <article class="pub-entry" id="pub-vp">
+            <div class="pub-date">2026</div>
+            <div>
+              <h3 class="pub-name">Mitigating Synchronization Effects in Price-Aware EV Charging Using Equitable, Communication-Free V-P Control</h3>
+              <div class="pub-byline"><strong>Pietro Zunino</strong>, Mattia Marinelli, Beste Erel, Jan Engelhardt</div>
+              <div class="pub-journal">10th E-Mobility Power System Integration Symposium, Porto, Portugal (Accepted)</div>
+              <div class="pub-actions">
+                <button data-toggle-bibtex="bib-2">bibtex</button>
+                <button data-copy-bibtex="bib-2">copy</button>
+              </div>
+              <div id="bib-2" class="bibtex-box">@inproceedings{zunino2026mitigating,
+  title={Mitigating Synchronization Effects in Price-Aware EV Charging Using Equitable, Communication-Free V-P Control},
+  author={Zunino, Pietro and Marinelli, Mattia and Erel, Beste and Engelhardt, Jan},
+  booktitle={10th E-Mobility Power System Integration Symposium},
+  year={2026},
+  note={Accepted, to be presented}
+}</div>
+            </div>
+          </article>
+
+          <article class="pub-entry" id="pub-freq">
+            <div class="pub-date">2025</div>
+            <div>
+              <h3 class="pub-name">Frequency Control in EV Clusters: Experimental Validation and Time Response Analysis of Centralized and Distributed Architectures</h3>
+              <div class="pub-byline"><strong>Pietro Zunino</strong>, Jan Engelhardt, Simone Striani, Kristoffer Laust Pedersen, Mattia Marinelli</div>
+              <div class="pub-journal">Proceedings of 2024 IEEE PES Innovative Smart Grid Technologies Europe (ISGT EUROPE)</div>
+              <div class="pub-actions">
+                <a href="https://doi.org/10.1109/ISGTEUROPE62998.2024.10863251" target="_blank" rel="noopener">doi:10.1109/ISGTEUROPE62998.2024.10863251</a>
+                <button data-toggle-bibtex="bib-3">bibtex</button>
+                <button data-copy-bibtex="bib-3">copy</button>
+              </div>
+              <div id="bib-3" class="bibtex-box">@inproceedings{zunino2025frequency,
+  title={Frequency Control in EV Clusters: Experimental Validation and Time Response Analysis of Centralized and Distributed Architectures},
+  author={Zunino, Pietro and Engelhardt, Jan and Striani, Simone and Pedersen, Kristoffer Laust and Marinelli, Mattia},
+  booktitle={Proceedings of 2024 IEEE PES Innovative Smart Grid Technologies Europe (ISGT EUROPE)},
+  year={2025},
+  publisher={IEEE},
+  doi={10.1109/ISGTEUROPE62998.2024.10863251}
+}</div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Chapter III: Experience -->
+      <section class="chapter" id="experience">
+        <div class="chapter-header">
+          <div class="chapter-number">Chapter III</div>
+          <h2 class="chapter-title">Chronology & Degrees</h2>
+        </div>
+
+        <div class="chronology-item">
+          <div class="chronology-date">2025 — Pres.</div>
+          <div>
+            <div class="chronology-role">Ph.D. Candidate in Power Systems</div>
+            <div class="chronology-place">Technical University of Denmark (DTU) · Roskilde, Denmark</div>
+            <div class="chronology-detail">DTEC GREAT project: EV charging strategies & TSO service effects on LV grids.</div>
+          </div>
+        </div>
+
+        <div class="chronology-item">
+          <div class="chronology-date">2024</div>
+          <div>
+            <div class="chronology-role">Research Assistant</div>
+            <div class="chronology-place">Technical University of Denmark (DTU) · Roskilde, Denmark</div>
+            <div class="chronology-detail">EV4EU project: Smart charging and frequency response testing via BeagleBones.</div>
+          </div>
+        </div>
+
+        <div class="chronology-item">
+          <div class="chronology-date">2021 — 2024</div>
+          <div>
+            <div class="chronology-role">M.Sc. in Electrical Engineering <span class="honor-tag">(110L/110 summa cum laude)</span></div>
+            <div class="chronology-place">Politecnico di Milano, Italy</div>
+            <div class="chronology-detail">Exchange thesis conducted at DTU on EV cluster frequency control.</div>
+          </div>
+        </div>
+
+        <div class="chronology-item">
+          <div class="chronology-date">2018 — 2021</div>
+          <div>
+            <div class="chronology-role">B.Sc. in Electrical Engineering <span class="honor-tag">(110L/110 summa cum laude)</span></div>
+            <div class="chronology-place">Università degli Studi di Genova, Italy</div>
+            <div class="chronology-detail">Thesis on frequency controller for multi-area power systems with HIL.</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="journal-footer">
+      <div>Roskilde, Denmark · DTU Wind & Energy Systems</div>
+      <div><a href="mailto:pizuni@dtu.dk" style="color: inherit;">pizuni@dtu.dk</a></div>
+    </footer>
+
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# System & Python
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# Multi-port local comparison daemon (optional)
+# serve_all.py

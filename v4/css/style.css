@@ -1,0 +1,386 @@
+/* ==========================================================================
+   Version 4: Warm Nordic Editorial / Journal
+   Parchment & Charcoal · Literary Serif Display · Classical Chapters
+   ========================================================================== */
+
+:root {
+  --bg: #FAF7F2;
+  --bg-warm: #F2ECE1;
+  --border: #E5DDCF;
+  --border-dark: #CFC3B0;
+
+  --text: #1C181D;
+  --text-muted: #5C5460;
+  --text-faint: #8E8492;
+
+  --accent-burgundy: #8F014E; /* Deep Nordic Berry */
+  --accent-gold: #B47306;     /* Muted Gold */
+  --accent-link: #DE1A58;     /* Raspberry */
+
+  --font-serif: "Newsreader", "Georgia", "Garamond", serif;
+  --font-sans: "Inter", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+[data-theme="dark"] {
+  --bg: #110E17;
+  --bg-warm: #1A1624;
+  --border: #2A2338;
+  --border-dark: #3F3553;
+
+  --text: #F3EFF7;
+  --text-muted: #A39AAF;
+  --text-faint: #736881;
+
+  --accent-burgundy: #D84E94;
+  --accent-gold: #E4A638;
+  --accent-link: #E8386E;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Container */
+.journal-container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem 1.5rem;
+}
+
+/* Floating Switcher */
+.version-banner {
+  background: var(--bg-warm);
+  color: var(--text);
+  padding: 0.4rem 1rem;
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.version-banner a {
+  color: var(--text-muted);
+  text-decoration: underline;
+}
+
+.version-banner a:hover,
+.version-banner a.active {
+  color: var(--accent-burgundy);
+  font-weight: 700;
+}
+
+/* Masthead Header */
+.masthead {
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--border-dark);
+}
+
+.masthead-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.masthead-title {
+  font-family: var(--font-serif);
+  font-size: 2.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+
+.masthead-sub {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.theme-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+/* Hero Thesis Quote */
+.thesis-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.thesis-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.45rem;
+  line-height: 1.45;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+
+.thesis-body {
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 1.75rem;
+}
+
+.thesis-body strong {
+  color: var(--text);
+}
+
+.journal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 0.88rem;
+}
+
+.journal-links a {
+  color: var(--accent-burgundy);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 550;
+}
+
+/* Chapter Sections */
+.chapter {
+  padding: 3.5rem 0 2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.chapter-header {
+  margin-bottom: 2rem;
+}
+
+.chapter-number {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--accent-burgundy);
+  margin-bottom: 0.25rem;
+}
+
+.chapter-title {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+/* Pillars */
+.pillars-editorial {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pillar-piece {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 1.5rem;
+}
+
+.pillar-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--text-faint);
+  line-height: 1;
+}
+
+.pillar-heading {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+
+.pillar-body {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 0.4rem;
+}
+
+.pillar-cite {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  color: var(--accent-burgundy);
+  text-decoration: underline;
+}
+
+/* Publications */
+.pub-editorial-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+.pub-entry {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 540px) {
+  .pub-entry {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}
+
+.pub-date {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text-faint);
+}
+
+.pub-name {
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+
+.pub-byline {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.pub-byline strong {
+  color: var(--text);
+}
+
+.pub-journal {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.pub-actions {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+}
+
+.pub-actions a,
+.pub-actions button {
+  color: var(--accent-burgundy);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.bibtex-box {
+  display: none;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+}
+
+.bibtex-box.show {
+  display: block;
+}
+
+/* Timeline */
+.chronology-item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: 500px) {
+  .chronology-item {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}
+
+.chronology-date {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--text-faint);
+}
+
+.chronology-role {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.chronology-place {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.chronology-detail {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.honor-tag {
+  color: var(--accent-gold);
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+/* Footer */
+.journal-footer {
+  padding: 3rem 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--text-faint);
+  display: flex;
+  justify-content: space-between;
+}

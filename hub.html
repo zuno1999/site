@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pietro Zunino — Design Variations Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0C0A12;
+      --card: #151120;
+      --card-hover: #1C172B;
+      --border: #261F36;
+      --border-hover: #483B66;
+      --text: #F4F2F8;
+      --text-muted: #A39BAF;
+      --text-faint: #6E667E;
+      --accent: #DE1A58;
+      --font-sans: "Inter", -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 3.5rem 1.5rem 5rem 1.5rem;
+    }
+    .hub-container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .hub-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    .hub-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+    }
+    .hub-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 65ch;
+    }
+    .versions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+    .version-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s ease;
+    }
+    .version-card:hover {
+      background: var(--card-hover);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .v-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .v-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .v-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+    .v-traits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border);
+    }
+    .trait-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+      color: var(--text-faint);
+    }
+    .launch-cta {
+      margin-top: 1rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .hub-footer {
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-faint);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .hub-footer code {
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.06);
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hub-container">
+    <div class="hub-badge">// DESIGN_SELECTION_SUITE</div>
+    <h1 class="hub-title">Pietro Zunino — Website Variations</h1>
+    <p class="hub-desc">
+      Explore 4 distinct, handcrafted design systems built using UI/UX design intelligence. Each version presents your research, publications, and credentials with a unique architectural personality.
+    </p>
+
+    <div class="versions-grid">
+
+      <!-- Version 1 -->
+      <a href="/v1/" class="version-card">
+        <div class="v-tag">VERSION 01 · RECOMMENDED</div>
+        <h2 class="v-name">Swiss Modernism & Editorial</h2>
+        <p class="v-desc">
+          Rational grid, mathematical alignment, hairline rules, zero cards, and generous whitespace. Treats your EV research like an authoritative European engineering monograph.
+        </p>
+        <div class="v-traits">
+          <span class="trait-pill">No Cards</span>
+          <span class="trait-pill">Hairline Rules</span>
+          <span class="trait-pill">3-Col Pillars</span>
+          <span class="trait-pill">Bibliographic List</span>
+        </div>
+        <div class="launch-cta">Open Version 1 →</div>
+      </a>
+
+      <!-- Version 2 -->
+      <a href="/v2/" class="version-card">
+        <div class="v-tag">VERSION 02</div>
+        <h2 class="v-name">The Classic Academic Scholar</h2>
+        <p class="v-desc">
+          Traditional two-column layout with a sticky faculty sidebar on the left and a continuous research & publication feed on the right. Inspired by Stanford, MIT, and Cambridge research profiles.
+        </p>
+        <div class="v-traits">
+          <span class="trait-pill">Sticky Sidebar</span>
+          <span class="trait-pill">Two-Column</span>
+          <span class="trait-pill">Newsreader Serif</span>
+          <span class="trait-pill">Faculty Vibe</span>
+        </div>
+        <div class="launch-cta">Open Version 2 →</div>
+      </a>
+
+      <!-- Version 3 -->
+      <a href="/v3/" class="version-card">
+        <div class="v-tag">VERSION 03</div>
+        <h2 class="v-name">High-Craft Tech & Terminal Minimalist</h2>
+        <p class="v-desc">
+          High information density, subtle border grids, dark-first mode, and monospace technical annotations. Inspired by the minimal portfolios of top computational researchers and software artisans.
+        </p>
+        <div class="v-traits">
+          <span class="trait-pill">Dark First</span>
+          <span class="trait-pill">High Density</span>
+          <span class="trait-pill">JetBrains Mono</span>
+          <span class="trait-pill">R&D Engineer</span>
+        </div>
+        <div class="launch-cta">Open Version 3 →</div>
+      </a>
+
+      <!-- Version 4 -->
+      <a href="/v4/" class="version-card">
+        <div class="v-tag">VERSION 04</div>
+        <h2 class="v-name">Warm Nordic Editorial / Journal</h2>
+        <p class="v-desc">
+          Parchment linen canvas, literary serif display typography, editorial chapter divisions, and pull-quotes. Reads like an intellectual Nordic scientific publication.
+        </p>
+        <div class="v-traits">
+          <span class="trait-pill">Warm Parchment</span>
+          <span class="trait-pill">Literary Serif</span>
+          <span class="trait-pill">Chapter Structure</span>
+          <span class="trait-pill">Monograph Feel</span>
+        </div>
+        <div class="launch-cta">Open Version 4 →</div>
+      </a>
+
+    </div>
+
+    <div class="hub-footer">
+      <div>Run <code>python serve_all.py</code> to test each version on its own separate localhost port (8001–8004).</div>
+      <div>Pietro Zunino · DTU Wind & Energy Systems</div>
+    </div>
+  </div>
+
+</body>
+</html>
