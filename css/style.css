@@ -67,25 +67,33 @@ body {
   align-items: start;
 }
 
-@media (max-width: 860px) {
-  .scholar-wrapper {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    padding: 2.25rem 1.25rem;
-  }
+/* Left Sidebar - default static in normal document flow */
+.scholar-sidebar {
+  display: flex;
+  flex-direction: column;
+  position: static;
+}
 
+/* Sticky sidebar strictly on desktop (>= 861px) */
+@media (min-width: 861px) {
   .scholar-sidebar {
-    position: static;
-    top: auto;
+    position: sticky;
+    top: 3rem;
   }
 }
 
-/* Sticky Left Sidebar */
-.scholar-sidebar {
-  position: sticky;
-  top: 3rem;
-  display: flex;
-  flex-direction: column;
+/* Mobile & tablet single column layout (<= 860px) */
+@media (max-width: 860px) {
+  .scholar-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2rem 1.25rem;
+  }
+
+  .scholar-sidebar {
+    position: static !important;
+    top: auto !important;
+  }
 }
 
 .profile-photo-wrapper {
