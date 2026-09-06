@@ -255,6 +255,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   border-bottom: 1px solid var(--border);
   padding-bottom: 0.75rem;
   margin-bottom: 1.5rem;
@@ -312,29 +313,12 @@ body {
 }
 
 /* Collapsible Accordion Affordance */
-.section-head-right {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.section-count {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  background: var(--bg-sidebar);
-  border: 1px solid var(--border);
-  padding: 0.18rem 0.55rem;
-  border-radius: 12px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-}
-
 .section-chevron {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--text-faint);
+  flex-shrink: 0;
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.18s ease;
 }
 
@@ -594,7 +578,7 @@ body {
     font-size: 2.25rem;
   }
   .section-title {
-    font-size: 1.55rem;
+    font-size: 1.45rem;
     gap: 0.65rem;
   }
   .section-badge {
