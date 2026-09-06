@@ -269,7 +269,7 @@ body {
   justify-content: center;
   width: 38px;
   height: 38px;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--bg-sidebar);
   border: 1px solid var(--border);
   color: var(--accent);
