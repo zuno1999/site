@@ -94,6 +94,14 @@ body {
     position: static !important;
     top: auto !important;
   }
+
+  .scholar-content {
+    gap: 1.75rem;
+  }
+
+  .scholar-section:not(.is-collapsed) {
+    margin-bottom: 1.25rem;
+  }
 }
 
 .profile-photo-wrapper {
@@ -250,6 +258,19 @@ body {
   border-bottom: 1px solid var(--border);
   padding-bottom: 0.75rem;
   margin-bottom: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.2s ease;
+}
+
+.section-head:hover {
+  border-bottom-color: var(--border-strong);
+}
+
+.section-head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 .section-title {
@@ -288,6 +309,65 @@ body {
 .section-head:hover .section-badge {
   border-color: var(--border-strong);
   transform: translateY(-1px);
+}
+
+/* Collapsible Accordion Affordance */
+.section-head-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.section-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border);
+  padding: 0.18rem 0.55rem;
+  border-radius: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.section-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.18s ease;
+}
+
+.section-head:hover .section-chevron {
+  color: var(--accent);
+}
+
+/* Accordion Smooth Body Transition */
+.section-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
+  opacity: 1;
+}
+
+.section-body-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Collapsed State */
+.scholar-section.is-collapsed .section-body {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.scholar-section.is-collapsed .section-chevron {
+  transform: rotate(-90deg);
+}
+
+.scholar-section.is-collapsed .section-head {
+  margin-bottom: 0;
 }
 
 /* Research Pillars List */

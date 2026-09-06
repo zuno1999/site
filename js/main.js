@@ -6,6 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initBibtexButtons();
+  initCollapsibleSections();
   initCurrentYear();
 });
 
@@ -106,5 +107,70 @@ function initCurrentYear() {
   const yearSpan = document.getElementById('current-year');
   if (yearSpan) {
     yearSpan.textContent = new Date().getFullYear();
+  }
+}
+
+/**
+ * Collapsible Section Accordions
+ * Option 1 (Hook Strategy):
+ * - On mobile (<= 860px): Section 1 (Research) starts open, sections 2, 3, 4 start collapsed.
+ * - On desktop (> 860px): All sections start open.
+ * - Headers toggle open/close with keyboard and touch support.
+ */
+function initCollapsibleSections() {
+  const sections = document.querySelectorAll('.scholar-section');
+  if (!sections.length) return;
+
+  const isMobile = window.innerWidth <= 860;
+
+  sections.forEach((section, index) => {
+    const head = section.querySelector('.section-head');
+    const body = section.querySelector('.section-body');
+    if (!head || !body) return;
+
+    head.setAttribute('role', 'button');
+    head.setAttribute('tabindex', '0');
+    if (body.id) head.setAttribute('aria-controls', body.id);
+
+    // On mobile, keep first section open, collapse the others
+    // On desktop, keep all open
+    if (isMobile && index > 0) {
+      section.classList.add('is-collapsed');
+      head.setAttribute('aria-expanded', 'false');
+    } else {
+      section.classList.remove('is-collapsed');
+      head.setAttribute('aria-expanded', 'true');
+    }
+
+    const toggle = () => {
+      const isCurrentlyCollapsed = section.classList.contains('is-collapsed');
+      if (isCurrentlyCollapsed) {
+        section.classList.remove('is-collapsed');
+        head.setAttribute('aria-expanded', 'true');
+      } else {
+        section.classList.add('is-collapsed');
+        head.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    head.addEventListener('click', toggle);
+    head.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+
+  // If a direct hash link was followed, ensure that section is open
+  if (window.location.hash) {
+    try {
+      const targetSection = document.querySelector(window.location.hash);
+      if (targetSection && targetSection.classList.contains('scholar-section')) {
+        targetSection.classList.remove('is-collapsed');
+        const head = targetSection.querySelector('.section-head');
+        if (head) head.setAttribute('aria-expanded', 'true');
+      }
+    } catch (e) {}
   }
 }
