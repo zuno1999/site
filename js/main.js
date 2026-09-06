@@ -112,16 +112,18 @@ function initCurrentYear() {
 
 /**
  * Collapsible Section Accordions
- * Option 1 (Hook Strategy):
- * - On mobile (<= 860px): Section 1 (Research) starts open, sections 2, 3, 4 start collapsed.
- * - On desktop (> 860px): All sections start open.
- * - Headers toggle open/close with keyboard and touch support.
+ * - Approach A (Mobile Exclusive, Desktop Independent):
+ *   - On mobile (<= 860px): Section 1 (Research) starts open, sections 2, 3, 4 start collapsed.
+ *     Opening any section automatically collapses the other sections (exclusive accordion),
+ *     with smooth scroll stabilization to prevent accordion jump.
+ *   - On desktop (> 860px): All sections start open and toggle independently.
+ *   - Headers toggle open/close with keyboard and touch support.
  */
 function initCollapsibleSections() {
   const sections = document.querySelectorAll('.scholar-section');
   if (!sections.length) return;
 
-  const isMobile = window.innerWidth <= 860;
+  const isMobile = () => window.innerWidth <= 860;
 
   sections.forEach((section, index) => {
     const head = section.querySelector('.section-head');
@@ -132,9 +134,8 @@ function initCollapsibleSections() {
     head.setAttribute('tabindex', '0');
     if (body.id) head.setAttribute('aria-controls', body.id);
 
-    // On mobile, keep first section open, collapse the others
-    // On desktop, keep all open
-    if (isMobile && index > 0) {
+    // Initial setup on load
+    if (isMobile() && index > 0) {
       section.classList.add('is-collapsed');
       head.setAttribute('aria-expanded', 'false');
     } else {
@@ -144,10 +145,34 @@ function initCollapsibleSections() {
 
     const toggle = () => {
       const isCurrentlyCollapsed = section.classList.contains('is-collapsed');
+
       if (isCurrentlyCollapsed) {
+        // If opening on mobile, collapse all other sections (exclusive accordion)
+        if (isMobile()) {
+          sections.forEach((otherSection) => {
+            if (otherSection !== section) {
+              otherSection.classList.add('is-collapsed');
+              const otherHead = otherSection.querySelector('.section-head');
+              if (otherHead) otherHead.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
+
         section.classList.remove('is-collapsed');
         head.setAttribute('aria-expanded', 'true');
+
+        // Smooth scroll stabilization on mobile to avoid accordion jump
+        if (isMobile()) {
+          setTimeout(() => {
+            const headerRect = head.getBoundingClientRect();
+            if (headerRect.top < 15 || headerRect.top > window.innerHeight * 0.4) {
+              const targetY = window.pageYOffset + headerRect.top - 20;
+              window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+            }
+          }, 60);
+        }
       } else {
+        // If clicking an already open section, toggle it collapsed
         section.classList.add('is-collapsed');
         head.setAttribute('aria-expanded', 'false');
       }
@@ -167,6 +192,15 @@ function initCollapsibleSections() {
     try {
       const targetSection = document.querySelector(window.location.hash);
       if (targetSection && targetSection.classList.contains('scholar-section')) {
+        if (isMobile()) {
+          sections.forEach((otherSection) => {
+            if (otherSection !== targetSection) {
+              otherSection.classList.add('is-collapsed');
+              const otherHead = otherSection.querySelector('.section-head');
+              if (otherHead) otherHead.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
         targetSection.classList.remove('is-collapsed');
         const head = targetSection.querySelector('.section-head');
         if (head) head.setAttribute('aria-expanded', 'true');
