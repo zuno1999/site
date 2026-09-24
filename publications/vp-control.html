@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive: Mitigating Synchronization Effects in EV Charging</title>
+  
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+        document.body.innerHTML += '<div style="color: #dc2626; background: #fee2e2; padding: 20px; font-family: monospace; z-index: 9999; position: relative;">Error: ' + message + '</div>';
+        return true;
+    };
+  </script>
+
+  <!-- React & ReactDOM via CDN -->
+  <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/react-is@18.2.0/umd/react-is.production.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Recharts -->
+  <script src="https://unpkg.com/recharts@2.12.0/umd/Recharts.js"></script>
+
+  <!-- Fonts (Newsreader for editorial look, Inter for data) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind Configuration for Editorial Style -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#fdfcf8', // Warm off-white
+            ink: '#111827',   // Deep slate/black
+            accent: '#2563eb', // Academic blue
+            danger: '#dc2626',
+            success: '#059669',
+            border: '#e5e7eb',
+            muted: '#6b7280'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Newsreader', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body { 
+      background-color: #fdfcf8; 
+      color: #111827; 
+      margin: 0; 
+      padding: 0; 
+    }
+    .step { 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      padding: 4rem 2rem;
+    }
+    .step-content {
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      opacity: 0.3;
+    }
+    .step.active .step-content {
+      opacity: 1;
+    }
+    
+    /* Clean transition for SVG elements */
+    .svg-transition {
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const { 
+      ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip
+    } = window.Recharts;
+
+    const radarData = [
+      { subject: 'Grid Safety', Uncontrolled: 20, Droop: 100, PriceOptimized: 10, Adaptive: 100, fullMark: 100 },
+      { subject: 'Fairness', Uncontrolled: 100, Droop: 45, PriceOptimized: 100, Adaptive: 88, fullMark: 100 },
+      { subject: 'Cost Savings', Uncontrolled: 20, Droop: 20, PriceOptimized: 100, Adaptive: 100, fullMark: 100 },
+    ];
+
+    // --- Custom SVG Components ---
+    
+    const HouseIcon = ({ x, y, activeState, distanceLabel }) => {
+      // Determine colors and battery levels based on the active narrative step
+      let batteryLevel = 0;
+      let batteryColor = '#e5e7eb'; // default empty
+      let highlight = false;
+
+      if (activeState === 1) {
+        // Synchronization: all demanding max power
+        batteryLevel = 100;
+        batteryColor = '#dc2626'; // Red overload
+        highlight = true;
+      } else if (activeState === 2) {
+        // Droop: unfairness
+        if (distanceLabel === 'Near') { batteryLevel = 95; batteryColor = '#059669'; }
+        if (distanceLabel === 'Mid') { batteryLevel = 50; batteryColor = '#d97706'; }
+        if (distanceLabel === 'Far') { batteryLevel = 10; batteryColor = '#dc2626'; highlight = true; }
+      } else if (activeState === 3) {
+        // Adaptive V-P: Fair distribution
+        batteryLevel = 75; batteryColor = '#059669'; // all equal
+      }
+
+      return (
+        <g transform={`translate(${x}, ${y})`} className="svg-transition">
+          {/* Connection line to feeder */}
+          <line x1="0" y1="-40" x2="0" y2="0" stroke={highlight && activeState === 1 ? '#dc2626' : '#9ca3af'} strokeWidth="3" className="svg-transition" />
+          
+          {/* House Structure */}
+          <path d="M-20 20 v-20 l20 -15 l20 15 v20 z" fill="#ffffff" stroke={highlight ? batteryColor : '#4b5563'} strokeWidth="2" className="svg-transition" />
+          
+          {/* Battery Indicator */}
+          <rect x="-10" y="0" width="20" height="10" rx="2" fill="#e5e7eb" stroke="#4b5563" strokeWidth="1" />
+          <rect x="-10" y="0" width={(batteryLevel/100) * 20} height="10" rx="2" fill={batteryColor} className="svg-transition" />
+          
+          <text x="0" y="40" textAnchor="middle" fontSize="12" fontWeight="500" fill="#4b5563">{distanceLabel}</text>
+          
+          {/* Signal Ping for Adaptive Control (Step 3) */}
+          {activeState === 3 && (
+            <circle cx="0" cy="-20" r="10" fill="none" stroke="#2563eb" strokeWidth="2" opacity="0.5">
+              <animate attributeName="r" values="5;20" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.8;0" dur="2s" repeatCount="indefinite" />
+            </circle>
+          )}
+        </g>
+      );
+    };
+
+    const FeederVisualization = ({ step }) => {
+      // Line color changes if overloaded
+      const isOverloaded = step === 1;
+      const lineColor = isOverloaded ? '#dc2626' : '#4b5563';
+      const lineWidth = isOverloaded ? 6 : 4;
+
+      return (
+        <svg viewBox="0 0 800 400" className="w-full h-full drop-shadow-sm">
+          {/* Main Feeder Line */}
+          <line x1="100" y1="200" x2="700" y2="200" stroke={lineColor} strokeWidth={lineWidth} className="svg-transition" />
+          
+          {/* Transformer */}
+          <g transform="translate(80, 200)" className="svg-transition">
+            <rect x="-40" y="-50" width="60" height="100" fill="#111827" rx="4" />
+            <rect x="-30" y="-40" width="40" height="20" fill="#374151" />
+            <rect x="-30" y="-10" width="40" height="20" fill="#374151" />
+            <rect x="-30" y="20" width="40" height="20" fill="#374151" />
+            <text x="-10" y="-60" textAnchor="middle" fontSize="14" fontWeight="600" fill="#111827">Transformer</text>
+            {isOverloaded && <text x="-10" y="70" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#dc2626">OVERLOAD</text>}
+          </g>
+
+          {/* Houses */}
+          <HouseIcon x="250" y="240" activeState={step} distanceLabel="Near" />
+          <HouseIcon x="450" y="240" activeState={step} distanceLabel="Mid" />
+          <HouseIcon x="650" y="240" activeState={step} distanceLabel="Far" />
+
+          {/* Annotations */}
+          <g className={`svg-transition ${step === 2 ? 'opacity-100' : 'opacity-0'}`}>
+            <path d="M 650 310 Q 650 350 450 350 Q 250 350 250 310" fill="none" stroke="#dc2626" strokeWidth="2" strokeDasharray="4 4" />
+            <text x="450" y="370" textAnchor="middle" fontSize="14" fill="#dc2626" fontStyle="italic">Systematic Penalty: Far houses receive minimal power</text>
+          </g>
+
+          <g className={`svg-transition ${step === 3 ? 'opacity-100' : 'opacity-0'}`}>
+            <text x="450" y="150" textAnchor="middle" fontSize="14" fill="#2563eb" fontWeight="500">Low-frequency distance estimation (Fairness achieved)</text>
+          </g>
+        </svg>
+      );
+    };
+
+    const App = () => {
+      const [activeStep, setActiveStep] = useState(0);
+      const stepRefs = useRef([]);
+
+      useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setActiveStep(Number(entry.target.dataset.step));
+            }
+          });
+        }, { rootMargin: '-40% 0px -40% 0px' });
+
+        stepRefs.current.forEach(ref => {
+          if (ref) observer.observe(ref);
+        });
+
+        return () => observer.disconnect();
+      }, []);
+
+      const renderRightSide = () => {
+        if (activeStep <= 3) {
+          return <FeederVisualization step={activeStep} />;
+        } else if (activeStep === 4) {
+          return (
+            <div className="w-full h-full flex flex-col items-center justify-center p-8">
+              <h3 className="font-serif text-2xl mb-4 text-ink">The 80% Scenario</h3>
+              <ResponsiveContainer width="100%" height={400}>
+                <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
+                  <PolarGrid stroke="#e5e7eb" />
+                  <PolarAngleAxis dataKey="subject" tick={{ fill: '#4b5563', fontSize: 13, fontFamily: 'Inter' }} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                  <Tooltip contentStyle={{backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '4px', fontFamily: 'Inter'}} />
+                  
+                  {/* Styling strictly editorial: grays for baselines, primary color for proposed */}
+                  <Radar name="Price Optimized" dataKey="PriceOptimized" stroke="#9ca3af" fill="none" strokeWidth={2} strokeDasharray="4 4" />
+                  <Radar name="Voltage Droop" dataKey="Droop" stroke="#4b5563" fill="none" strokeWidth={2} />
+                  <Radar name="Adaptive V-P (Proposed)" dataKey="Adaptive" stroke="#2563eb" fill="#2563eb" fillOpacity={0.15} strokeWidth={3} />
+                </RadarChart>
+              </ResponsiveContainer>
+              <div className="flex gap-6 mt-4 text-sm font-sans text-muted">
+                <div className="flex items-center gap-2"><span className="w-3 h-0.5 bg-gray-400 border-dashed border-t-2"></span> Price Optimized</div>
+                <div className="flex items-center gap-2"><span className="w-3 h-0.5 bg-gray-600"></span> Voltage Droop</div>
+                <div className="flex items-center gap-2"><span className="w-3 h-3 bg-blue-600/20 border border-blue-600"></span> Adaptive V-P</div>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div className="w-full h-full flex flex-col items-center justify-center px-8 lg:px-12 bg-white">
+              <h3 className="font-serif text-3xl mb-8 text-ink text-center">Summary of Strategies</h3>
+              
+              <div className="w-full max-w-xl border border-border rounded-lg overflow-hidden font-sans shadow-sm">
+                
+                {/* Header */}
+                <div className="grid grid-cols-4 bg-gray-50 border-b border-border text-[10px] md:text-xs uppercase tracking-wider font-semibold text-ink p-2 md:p-4 gap-1">
+                  <div className="col-span-1">Strategy</div>
+                  <div className="col-span-1 text-center">Cost Savings</div>
+                  <div className="col-span-1 text-center">Grid Safety</div>
+                  <div className="col-span-1 text-center">Fairness</div>
+                </div>
+                
+                {/* Row 1: Price Optimized */}
+                <div className="grid grid-cols-4 border-b border-border p-2 md:p-4 items-center gap-1">
+                  <div className="col-span-1 text-xs md:text-sm font-medium text-muted leading-tight">Price Optimized</div>
+                  <div className="col-span-1 flex justify-center text-success">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M20 6L9 17l-5-5"/></svg>
+                  </div>
+                  <div className="col-span-1 flex justify-center text-danger">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M18 6L6 18M6 6l12 12"/></svg>
+                  </div>
+                  <div className="col-span-1 flex justify-center text-success">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M20 6L9 17l-5-5"/></svg>
+                  </div>
+                </div>
+
+                {/* Row 2: Standard Droop */}
+                <div className="grid grid-cols-4 border-b border-border p-2 md:p-4 items-center gap-1">
+                  <div className="col-span-1 text-xs md:text-sm font-medium text-muted leading-tight">Standard Droop</div>
+                  <div className="col-span-1 flex justify-center text-danger">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M18 6L6 18M6 6l12 12"/></svg>
+                  </div>
+                  <div className="col-span-1 flex justify-center text-success">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M20 6L9 17l-5-5"/></svg>
+                  </div>
+                  <div className="col-span-1 flex justify-center text-danger">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M18 6L6 18M6 6l12 12"/></svg>
+                  </div>
+                </div>
+
+                {/* Row 3: Adaptive V-P */}
+                <div className="grid grid-cols-4 p-2 md:p-4 items-center bg-blue-50/30 gap-1">
+                  <div className="col-span-1 text-xs md:text-sm font-bold text-accent leading-tight">Adaptive V-P</div>
+                  <div className="col-span-1 flex justify-center text-success">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M20 6L9 17l-5-5"/></svg>
+                  </div>
+                  <div className="col-span-1 flex justify-center text-success">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M20 6L9 17l-5-5"/></svg>
+                  </div>
+                  <div className="col-span-1 flex justify-center text-success">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M20 6L9 17l-5-5"/></svg>
+                  </div>
+                </div>
+              </div>
+              
+              <p className="text-sm text-muted mt-8 max-w-md text-center leading-relaxed">
+                The Adaptive V-P Control resolves the trilemma by securing the local grid while ensuring distant households are not unfairly penalized.
+              </p>
+            </div>
+          );
+        }
+      };
+
+      return (
+        <div className="min-h-screen">
+          
+          <nav className="fixed top-0 left-0 w-full p-6 z-50 bg-paper/90 backdrop-blur border-b border-border">
+            <a href="../index.html" className="font-sans text-sm font-medium text-muted hover:text-ink transition flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Back to Profile
+            </a>
+          </nav>
+
+          <div className="flex flex-col md:flex-row relative pt-16">
+            
+            {/* Left Column: Text Narrative */}
+            <div className="w-full md:w-1/2 lg:w-1/2 px-8 lg:px-24 pt-12 pb-[45vh] md:pb-12 relative z-10 border-r border-border bg-paper">
+              
+              {/* Step 0 */}
+              <div className={`step ${activeStep === 0 ? 'active' : ''}`} data-step="0" ref={el => stepRefs.current[0] = el}>
+                <div className="step-content">
+                  <div className="font-sans text-xs font-bold tracking-widest text-accent uppercase mb-4">Interactive Paper</div>
+                  <h1 className="font-serif text-4xl lg:text-5xl font-normal leading-tight text-ink mb-6">
+                    Mitigating Synchronization Effects in EV Charging
+                  </h1>
+                  <p className="font-sans text-lg text-muted mb-4 leading-relaxed">
+                    Based on research by P. Zunino, M. Marinelli, B. Erel, and J. Engelhardt.
+                  </p>
+                  <div className="h-px w-12 bg-border my-8"></div>
+                  <p className="font-sans text-muted">Scroll down to explore how we can manage synchronized charging demand while preserving grid stability and spatial fairness.</p>
+                </div>
+              </div>
+
+              {/* Step 1 */}
+              <div className={`step ${activeStep === 1 ? 'active' : ''}`} data-step="1" ref={el => stepRefs.current[1] = el}>
+                <div className="step-content">
+                  <h2 className="font-serif text-3xl mb-4 text-ink">1. The Synchronization Challenge</h2>
+                  <p className="font-sans text-muted mb-4 leading-relaxed">
+                    Currently, 85% of Electric Vehicle charging occurs at home on the low-voltage grid. While convenient, it introduces a severe operational challenge.
+                  </p>
+                  <p className="font-sans text-muted leading-relaxed">
+                    EVs tend to synchronize their charging due to similar commuter arrival times, automatic price optimization, or the provision of ancillary services to the grid. This simultaneous demand overloads local transformers and causes severe voltage drops.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className={`step ${activeStep === 2 ? 'active' : ''}`} data-step="2" ref={el => stepRefs.current[2] = el}>
+                <div className="step-content">
+                  <h2 className="font-serif text-3xl mb-4 text-ink">2. The Unfairness of Standard Solutions</h2>
+                  <p className="font-sans text-muted mb-4 leading-relaxed">
+                    A common method to protect the grid is local voltage droop control, where chargers automatically curtail their power when they detect a voltage drop. 
+                  </p>
+                  <p className="font-sans text-muted leading-relaxed">
+                    While this prevents grid failure, it introduces a critical issue: geographical unfairness. Due to the physics of power cables, houses located further down the feeder naturally experience lower voltages. Traditional droop controllers heavily restrict power to these distant homes, while houses near the transformer charge without interruption.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className={`step ${activeStep === 3 ? 'active' : ''}`} data-step="3" ref={el => stepRefs.current[3] = el}>
+                <div className="step-content">
+                  <h2 className="font-serif text-3xl mb-4 text-ink">3. An Equitable, Adaptive Approach</h2>
+                  <p className="font-sans text-muted mb-4 leading-relaxed">
+                    To resolve this inequity without relying on expensive communication networks, we designed the Adaptive V-P Control strategy. It balances three objectives:
+                  </p>
+                  <ul className="font-sans text-muted space-y-4 list-none pl-0">
+                    <li className="pl-4 border-l-2 border-border"><strong>Economical:</strong> Supports users in optimizing their charging costs based on tariffs.</li>
+                    <li className="pl-4 border-l-2 border-border"><strong>Decentralized:</strong> Relies on fast, local voltage measurements to secure the grid instantly.</li>
+                    <li className="pl-4 border-l-2 border-accent text-ink"><strong>Fair:</strong> Chargers perform a one-time distance estimation to adjust their curtailment thresholds, ensuring the burden of grid protection is shared equally.</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className={`step ${activeStep === 4 ? 'active' : ''}`} data-step="4" ref={el => stepRefs.current[4] = el}>
+                <div className="step-content">
+                  <h2 className="font-serif text-3xl mb-4 text-ink">4. Validating the Strategy</h2>
+                  <p className="font-sans text-muted mb-4 leading-relaxed">
+                    We validated this approach via Monte Carlo simulations on the IEEE LV test feeder, using empirical residential EV charging data.
+                  </p>
+                  <p className="font-sans text-muted leading-relaxed">
+                    In a highly synchronized scenario with 80% EV penetration, traditional price optimization led to severe voltage violations. Standard voltage droop avoided these violations but resulted in poor spatial fairness. Our Adaptive V-P strategy achieved an optimal balance: zero voltage violations, highly equitable power distribution (0.88 Jain's Index), and charging costs equal to the purely price-optimized baseline.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 5 */}
+              <div className={`step ${activeStep === 5 ? 'active' : ''}`} data-step="5" ref={el => stepRefs.current[5] = el}>
+                <div className="step-content">
+                  <h2 className="font-serif text-3xl mb-6 text-ink">Conclusion</h2>
+                  <p className="font-sans text-muted mb-8 leading-relaxed">
+                    The Adaptive V-P charging strategy demonstrates that it is possible to accommodate synchronized EV charging patterns. By intelligently distributing power curtailment, we can protect physical grid infrastructure while maintaining economic incentives and fairness for all end users.
+                  </p>
+                  <a href="../assets/papers/Zunino_etal_2026_Mitigating_Synchronization.pdf" target="_blank" className="font-sans inline-block border border-ink text-ink hover:bg-ink hover:text-white font-medium py-3 px-8 rounded transition-colors">
+                    Read the Full Paper
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Column: Sticky Visualizations */}
+            <div className="hidden md:block w-full md:w-1/2 lg:w-1/2 sticky top-16 h-[calc(100vh-4rem)] bg-white">
+              {renderRightSide()}
+            </div>
+            
+            {/* Mobile Visualizations (Sticky Bottom Overlay) */}
+            <div className="md:hidden fixed bottom-0 left-0 w-full h-[40vh] bg-white border-t border-border z-20">
+               {renderRightSide()}
+            </div>
+
+          </div>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
