@@ -119,21 +119,21 @@
       return (
         <g transform={`translate(${x}, ${y})`} className="svg-transition">
           {/* Connection line to feeder */}
-          <line x1="0" y1="-40" x2="0" y2="0" stroke={highlight && activeState === 1 ? '#dc2626' : '#9ca3af'} strokeWidth="3" className="svg-transition" />
+          <line x1="0" y1="-40" x2="0" y2="-22" stroke={highlight && activeState === 1 ? '#dc2626' : '#9ca3af'} strokeWidth="3" className="svg-transition" />
           
-          {/* House Structure */}
-          <path d="M-20 20 v-20 l20 -15 l20 15 v20 z" fill="#ffffff" stroke={highlight ? batteryColor : '#4b5563'} strokeWidth="2" className="svg-transition" />
+          {/* House Structure (Scaled 1.5x) */}
+          <path d="M-30 30 v-30 l30 -22 l30 22 v30 z" fill="#ffffff" stroke={highlight ? batteryColor : '#4b5563'} strokeWidth="2.5" className="svg-transition" />
           
-          {/* Battery Indicator */}
-          <rect x="-10" y="0" width="20" height="10" rx="2" fill="#e5e7eb" stroke="#4b5563" strokeWidth="1" />
-          <rect x="-10" y="0" width={(batteryLevel/100) * 20} height="10" rx="2" fill={batteryColor} className="svg-transition" />
+          {/* Battery Indicator (Scaled 1.5x) */}
+          <rect x="-15" y="0" width="30" height="15" rx="3" fill="#e5e7eb" stroke="#4b5563" strokeWidth="1.5" />
+          <rect x="-15" y="0" width={(batteryLevel/100) * 30} height="15" rx="3" fill={batteryColor} className="svg-transition" />
           
-          <text x="0" y="40" textAnchor="middle" fontSize="12" fontWeight="500" fill="#4b5563">{distanceLabel}</text>
+          <text x="0" y="55" textAnchor="middle" fontSize="16" fontWeight="600" fill="#4b5563">{distanceLabel}</text>
           
           {/* Signal Ping for Adaptive Control (Step 3) */}
           {activeState === 3 && (
-            <circle cx="0" cy="-20" r="10" fill="none" stroke="#2563eb" strokeWidth="2" opacity="0.5">
-              <animate attributeName="r" values="5;20" dur="2s" repeatCount="indefinite" />
+            <circle cx="0" cy="-22" r="15" fill="none" stroke="#2563eb" strokeWidth="2.5" opacity="0.5">
+              <animate attributeName="r" values="5;25" dur="2s" repeatCount="indefinite" />
               <animate attributeName="opacity" values="0.8;0" dur="2s" repeatCount="indefinite" />
             </circle>
           )}
@@ -148,18 +148,18 @@
       const lineWidth = isOverloaded ? 6 : 4;
 
       return (
-        <svg viewBox="20 120 700 270" className="w-full h-full drop-shadow-sm">
+        <svg viewBox="0 80 750 350" className="w-full h-full drop-shadow-sm">
           {/* Main Feeder Line */}
           <line x1="100" y1="200" x2="700" y2="200" stroke={lineColor} strokeWidth={lineWidth} className="svg-transition" />
           
-          {/* Transformer */}
+          {/* Transformer (Scaled 1.5x) */}
           <g transform="translate(80, 200)" className="svg-transition">
-            <rect x="-40" y="-50" width="60" height="100" fill="#111827" rx="4" />
-            <rect x="-30" y="-40" width="40" height="20" fill="#374151" />
-            <rect x="-30" y="-10" width="40" height="20" fill="#374151" />
-            <rect x="-30" y="20" width="40" height="20" fill="#374151" />
-            <text x="-10" y="-60" textAnchor="middle" fontSize="14" fontWeight="600" fill="#111827">Transformer</text>
-            {isOverloaded && <text x="-10" y="70" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#dc2626">OVERLOAD</text>}
+            <rect x="-60" y="-75" width="90" height="150" fill="#111827" rx="6" />
+            <rect x="-45" y="-60" width="60" height="30" fill="#374151" />
+            <rect x="-45" y="-15" width="60" height="30" fill="#374151" />
+            <rect x="-45" y="30" width="60" height="30" fill="#374151" />
+            <text x="-15" y="-90" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#111827">Transformer</text>
+            {isOverloaded && <text x="-15" y="105" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#dc2626">OVERLOAD</text>}
           </g>
 
           {/* Houses */}
@@ -169,12 +169,12 @@
 
           {/* Annotations */}
           <g className={`svg-transition ${step === 2 ? 'opacity-100' : 'opacity-0'}`}>
-            <path d="M 650 310 Q 650 350 450 350 Q 250 350 250 310" fill="none" stroke="#dc2626" strokeWidth="2" strokeDasharray="4 4" />
-            <text x="450" y="370" textAnchor="middle" fontSize="14" fill="#dc2626" fontStyle="italic">Systematic Penalty: Far houses receive minimal power</text>
+            <path d="M 650 330 Q 650 380 450 380 Q 250 380 250 330" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeDasharray="5 5" />
+            <text x="450" y="405" textAnchor="middle" fontSize="16" fill="#dc2626" fontStyle="italic" fontWeight="500">Systematic Penalty: Far houses receive minimal power</text>
           </g>
 
           <g className={`svg-transition ${step === 3 ? 'opacity-100' : 'opacity-0'}`}>
-            <text x="450" y="150" textAnchor="middle" fontSize="14" fill="#2563eb" fontWeight="500">Low-frequency distance estimation (Fairness achieved)</text>
+            <text x="450" y="150" textAnchor="middle" fontSize="16" fill="#2563eb" fontWeight="600">Low-frequency distance estimation (Fairness achieved)</text>
           </g>
         </svg>
       );
@@ -230,10 +230,10 @@
           );
         } else {
           return (
-            <div className="w-full h-full flex flex-col items-center justify-center px-8 lg:px-12 bg-white">
-              <h3 className="font-serif text-3xl mb-8 text-ink text-center">Summary of Strategies</h3>
+            <div className="w-full h-full flex flex-col items-center justify-center px-1 py-2 md:p-8 bg-white overflow-y-auto">
+              <h3 className="hidden md:block font-serif text-3xl mb-8 text-ink text-center">Summary of Strategies</h3>
               
-              <div className="w-full max-w-xl border border-border rounded-lg overflow-hidden font-sans shadow-sm">
+              <div className="w-full max-w-xl border border-border rounded-lg overflow-hidden font-sans shadow-sm my-auto md:my-0">
                 
                 {/* Header */}
                 <div className="grid grid-cols-4 bg-gray-50 border-b border-border text-[10px] md:text-xs uppercase tracking-wider font-semibold text-ink p-2 md:p-4 gap-1">
@@ -286,7 +286,7 @@
                 </div>
               </div>
               
-              <p className="text-sm text-muted mt-8 max-w-md text-center leading-relaxed">
+              <p className="hidden md:block text-sm text-muted mt-8 max-w-md text-center leading-relaxed">
                 The Adaptive V-P Control resolves the trilemma by securing the local grid while ensuring distant households are not unfairly penalized.
               </p>
             </div>
