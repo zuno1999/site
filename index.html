@@ -10,6 +10,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
 </head>
 <body>
+  <style>
+    .symposium-banner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      background-color: #3b82f6;
+      color: #ffffff;
+      text-align: center;
+      padding: 14px 20px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+      transition: background-color 0.2s ease;
+    }
+    .symposium-banner:hover {
+      background-color: #2563eb;
+    }
+    .symposium-banner .arrow {
+      display: inline-block;
+      margin-left: 8px;
+      transition: transform 0.2s ease;
+    }
+    .symposium-banner:hover .arrow {
+      transform: translateX(4px);
+    }
+    @media (max-width: 600px) {
+      .symposium-banner {
+        font-size: 0.85rem;
+        padding: 12px 16px;
+      }
+    }
+  </style>
+  <a href="publications/vp-control.html" class="symposium-banner">
+    <span>👋 View the animated summary for my latest paper, presented at the 10th E-mobility symposium :)</span>
+    <span class="arrow">→</span>
+  </a>
 
   <div class="scholar-wrapper">
 
@@ -174,7 +216,7 @@
               <div class="pub-authors"><strong>P. Zunino</strong>, M. Marinelli, B. Erel, and J. Engelhardt</div>
               <div class="pub-venue">10th E-Mobility Power System Integration Symposium, Porto, Portugal (2026, Accepted)</div>
               <div class="pub-actions">
-                <a href="publications/vp-control.html" class="pub-action-link" style="color: #3b82f6; border-color: #3b82f6; font-weight: 600;">✨ Interactive Paper</a>
+                <a href="publications/vp-control.html" class="pub-action-link" style="color: #3b82f6; border-color: #3b82f6; font-weight: 600;">✨ Animated Summary</a>
                 <button class="pub-action-link" data-toggle-bibtex="bib-2">BibTeX</button>
                 <button class="pub-action-link" data-copy-bibtex="bib-2">Copy</button>
               </div>
